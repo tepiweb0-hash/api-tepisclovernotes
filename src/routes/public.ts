@@ -61,6 +61,7 @@ async function valueMap(collection: string, keyField: string, valueField: string
 
   snap.docs.forEach((doc) => {
     const row = doc.data()
+    if (Object.prototype.hasOwnProperty.call(row, 'enabled') && !enabled(row.enabled)) return
     const key = row[keyField]
     if (key !== undefined && key !== null && String(key) !== '') {
       out[String(key)] = String(row[valueField] ?? '')

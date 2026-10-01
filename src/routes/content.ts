@@ -6,6 +6,14 @@ import { requireEditor } from '../middleware/auth.js'
 
 export const contentRouter = Router()
 
+function canMutateCollection(req: any, res: any, collection: string) {
+  if (collection === 'cms_users' && req.cmsUser?.role !== 'owner') {
+    res.status(403).json({ error: 'Owner access required to manage CMS users.' })
+    return false
+  }
+  return true
+}
+
 function param(value: string | string[] | undefined, name: string): string {
   const resolved = Array.isArray(value) ? value[0] : value
   if (!resolved) throw new Error(`Missing route parameter: ${name}`)
@@ -27,6 +35,7 @@ contentRouter.post('/:collection', requireEditor, async (req, res, next) => {
   try {
     const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
+    if (!canMutateCollection(req, res, collection)) return
 
     const idField = ID_FIELDS[collection] || 'id'
     const id = String(req.body?.[idField] || makeId(collection))
@@ -59,6 +68,7 @@ contentRouter.patch('/:collection/:id', requireEditor, async (req, res, next) =>
   try {
     const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
+    if (!canMutateCollection(req, res, collection)) return
 
     const id = param(req.params.id, 'id')
     const ref = db.collection(collection).doc(id)
@@ -96,6 +106,7 @@ contentRouter.post('/:collection/:id/archive', requireEditor, async (req, res, n
   try {
     const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
+    if (!canMutateCollection(req, res, collection)) return
 
     const id = param(req.params.id, 'id')
     const ref = db.collection(collection).doc(id)
