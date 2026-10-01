@@ -77,13 +77,13 @@ migrationRouter.post('/import', requireOwner, async (req, res, next) => {
       return res.status(400).json({ error: `Sheet ${sourceSheet || '(blank)'} is not approved for migration.` })
     }
 
-    const rawRecords = Array.isArray(req.body?.records) ? req.body.records : []
+    const rawRecords: unknown[] = Array.isArray(req.body?.records) ? req.body.records : []
     if (rawRecords.length > 450) {
       return res.status(400).json({ error: 'Send at most 450 records per migration request.' })
     }
 
     const rows = rawRecords
-      .filter((item): item is Record<string, unknown> => Boolean(item) && typeof item === 'object' && !Array.isArray(item))
+      .filter((item: unknown): item is Record<string, unknown> => Boolean(item) && typeof item === 'object' && !Array.isArray(item))
       .map(normalizeRecord)
 
     const prepared: Array<{ id: string; data: Record<string, unknown> }> = []
