@@ -28,3 +28,10 @@ Output Directory, and Install Command on their defaults.
 This revision removes the Helmet dependency that caused a TypeScript
 NodeNext import error during Vercel builds. Equivalent basic security
 headers are set directly in `src/server.ts`.
+
+## Workbook migration
+Owner-only endpoints:
+- `GET /api/migration/definitions`
+- `POST /api/migration/import`
+
+The CMS Migration page reads the legacy `.xlsx` workbook in the browser and imports approved sheets to Firestore in batches while preserving legacy IDs. `CMS_USERS` and `CHANGE_LOG` are intentionally not imported.

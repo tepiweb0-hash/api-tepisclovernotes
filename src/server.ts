@@ -5,6 +5,7 @@ import { requireCmsAuth } from './middleware/auth.js'
 import { bootstrapRouter } from './routes/bootstrap.js'
 import { contentRouter } from './routes/content.js'
 import { mediaRouter } from './routes/media.js'
+import { migrationRouter } from './routes/migration.js'
 
 const app = express()
 const port = Number(process.env.PORT || 8080)
@@ -55,6 +56,7 @@ app.use('/api', requireCmsAuth)
 app.use('/api/bootstrap', bootstrapRouter)
 app.use('/api/content', contentRouter)
 app.use('/api/media', mediaRouter)
+app.use('/api/migration', migrationRouter)
 
 app.use((_req, res) => {
   res.status(404).json({ error: 'Route not found.' })
