@@ -6,9 +6,15 @@ import { requireEditor } from '../middleware/auth.js'
 
 export const contentRouter = Router()
 
+function param(value: string | string[] | undefined, name: string): string {
+  const resolved = Array.isArray(value) ? value[0] : value
+  if (!resolved) throw new Error(`Missing route parameter: ${name}`)
+  return resolved
+}
+
 contentRouter.get('/:collection', async (req, res, next) => {
   try {
-    const collection = req.params.collection
+    const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
     const snap = await db.collection(collection).get()
     res.json(snap.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
@@ -19,7 +25,7 @@ contentRouter.get('/:collection', async (req, res, next) => {
 
 contentRouter.post('/:collection', requireEditor, async (req, res, next) => {
   try {
-    const collection = req.params.collection
+    const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
 
     const idField = ID_FIELDS[collection] || 'id'
@@ -51,10 +57,11 @@ contentRouter.post('/:collection', requireEditor, async (req, res, next) => {
 
 contentRouter.patch('/:collection/:id', requireEditor, async (req, res, next) => {
   try {
-    const collection = req.params.collection
+    const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
 
-    const ref = db.collection(collection).doc(req.params.id)
+    const id = param(req.params.id, 'id')
+    const ref = db.collection(collection).doc(id)
     const current = await ref.get()
     if (!current.exists) {
       return res.status(404).json({ error: 'Record not found.' })
@@ -67,13 +74,13 @@ contentRouter.patch('/:collection/:id', requireEditor, async (req, res, next) =>
     }
 
     await ref.set(after, { merge: true })
-    const saved = { id: req.params.id, ...(await ref.get()).data() }
+    const saved = { id, ...(await ref.get()).data() }
 
     await audit(
       req.cmsUser!.uid,
       'update',
       collection,
-      req.params.id,
+      id,
       `Updated ${collection} record`,
       before,
       saved,
@@ -87,10 +94,11 @@ contentRouter.patch('/:collection/:id', requireEditor, async (req, res, next) =>
 
 contentRouter.post('/:collection/:id/archive', requireEditor, async (req, res, next) => {
   try {
-    const collection = req.params.collection
+    const collection = param(req.params.collection, 'collection')
     assertCollection(collection)
 
-    const ref = db.collection(collection).doc(req.params.id)
+    const id = param(req.params.id, 'id')
+    const ref = db.collection(collection).doc(id)
     const snap = await ref.get()
     if (!snap.exists) {
       return res.status(404).json({ error: 'Record not found.' })
@@ -113,13 +121,13 @@ contentRouter.post('/:collection/:id/archive', requireEditor, async (req, res, n
       req.cmsUser!.uid,
       'archive',
       collection,
-      req.params.id,
+      id,
       `Archived ${collection} record`,
       before,
       after,
     )
 
-    res.json({ ok: true, id: req.params.id })
+    res.json({ ok: true, id })
   } catch (error) {
     next(error)
   }

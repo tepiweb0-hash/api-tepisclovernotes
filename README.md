@@ -42,3 +42,7 @@ Authenticated CMS:
 - `POST /api/content/:collection/:id/archive`
 - `POST /api/media/signature`
 - `POST /api/media/register`
+
+
+## Build fix
+This version normalizes Express 5 route params before passing them to Firestore helpers, fixing Vercel TypeScript build errors where route params may be typed as `string | string[]`.
