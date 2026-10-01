@@ -6,6 +6,7 @@ import { bootstrapRouter } from './routes/bootstrap.js'
 import { contentRouter } from './routes/content.js'
 import { mediaRouter } from './routes/media.js'
 import { migrationRouter } from './routes/migration.js'
+import { publicRouter } from './routes/public.js'
 
 const app = express()
 const port = Number(process.env.PORT || 8080)
@@ -51,6 +52,10 @@ app.get('/health', (_req, res) => {
     time: new Date().toISOString(),
   })
 })
+
+// Public, read-only content bridge for the Next.js website.
+// This intentionally stays outside CMS authentication.
+app.use('/public', publicRouter)
 
 app.use('/api', requireCmsAuth)
 app.use('/api/bootstrap', bootstrapRouter)
