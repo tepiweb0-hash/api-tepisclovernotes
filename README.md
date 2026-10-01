@@ -1,48 +1,30 @@
 # Tepis Clover Notes API
 
-Express + TypeScript backend for the Tepis Clover Notes CMS.
+Express + TypeScript API for the Tepis Clover Notes CMS.
 
-## Services
+## Included
+- Firebase Admin authentication and Firestore access
+- CMS roles: owner, admin, editor, viewer
+- Content CRUD and archive endpoints
+- Audit logging
+- Cloudinary signed image uploads
+- Health endpoint: `/health`
+- Vercel zero-config `src/server.ts`
 
-- Firebase Admin SDK: authentication token verification + Firestore
-- Cloudinary: signed image uploads
-- Vercel: API deployment
+## Required Vercel environment variables
+- FIREBASE_PROJECT_ID
+- FIREBASE_CLIENT_EMAIL
+- FIREBASE_PRIVATE_KEY
+- CLOUDINARY_CLOUD_NAME
+- CLOUDINARY_API_KEY
+- CLOUDINARY_API_SECRET
+- CLOUDINARY_UPLOAD_PRESET
+- CMS_ORIGIN (add after the CMS gets its production URL)
 
-## Vercel environment variables
+## Vercel
+Use the Express/Node application preset if shown. Keep Build Command,
+Output Directory, and Install Command on their defaults.
 
-Required:
-
-- `FIREBASE_PROJECT_ID`
-- `FIREBASE_CLIENT_EMAIL`
-- `FIREBASE_PRIVATE_KEY`
-- `CLOUDINARY_CLOUD_NAME`
-- `CLOUDINARY_API_KEY`
-- `CLOUDINARY_API_SECRET`
-- `CLOUDINARY_UPLOAD_PRESET`
-
-Also set `CMS_ORIGIN` to the deployed CMS origin. It supports comma-separated origins, for example:
-
-`https://cms-tepisclovernotes.vercel.app,https://cms.tepisclovernotes.com`
-
-Do not commit `.env` files or Firebase service-account JSON files.
-
-## Routes
-
-Public:
-
-- `GET /`
-- `GET /health`
-
-Authenticated CMS:
-
-- `GET /api/bootstrap`
-- `GET /api/content/:collection`
-- `POST /api/content/:collection`
-- `PATCH /api/content/:collection/:id`
-- `POST /api/content/:collection/:id/archive`
-- `POST /api/media/signature`
-- `POST /api/media/register`
-
-
-## Build fix
-This version normalizes Express 5 route params before passing them to Firestore helpers, fixing Vercel TypeScript build errors where route params may be typed as `string | string[]`.
+This revision removes the Helmet dependency that caused a TypeScript
+NodeNext import error during Vercel builds. Equivalent basic security
+headers are set directly in `src/server.ts`.

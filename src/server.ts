@@ -1,7 +1,6 @@
 import 'dotenv/config'
 import cors from 'cors'
 import express from 'express'
-import helmet from 'helmet'
 import { requireCmsAuth } from './middleware/auth.js'
 import { bootstrapRouter } from './routes/bootstrap.js'
 import { contentRouter } from './routes/content.js'
@@ -16,7 +15,13 @@ const allowedOrigins = (process.env.CMS_ORIGIN || 'http://localhost:5173')
   .filter(Boolean)
 
 app.disable('x-powered-by')
-app.use(helmet())
+app.use((_req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff')
+  res.setHeader('X-Frame-Options', 'DENY')
+  res.setHeader('Referrer-Policy', 'no-referrer')
+  res.setHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+  next()
+})
 app.use(
   cors({
     origin(origin, callback) {
