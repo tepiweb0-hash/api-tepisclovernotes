@@ -43,6 +43,8 @@ function enabled(value: unknown) {
 }
 
 function isPublicRow(row: Record<string, unknown>) {
+  const publication = String(row.publication_status || '').toLowerCase()
+  if (publication) return publication === 'published' && enabled(row.enabled)
   if (!enabled(row.enabled)) return false
   if (row.status) return PUBLIC_STATUSES.has(String(row.status))
   return true

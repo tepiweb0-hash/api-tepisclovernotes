@@ -119,10 +119,7 @@ contentRouter.post('/:collection/:id/archive', requireEditor, async (req, res, n
     const update: Record<string, unknown> = {
       updated_at: new Date().toISOString(),
       enabled: false,
-    }
-
-    if (before && Object.prototype.hasOwnProperty.call(before, 'status')) {
-      update.status = 'archived'
+      publication_status: 'archived',
     }
 
     await ref.set(update, { merge: true })

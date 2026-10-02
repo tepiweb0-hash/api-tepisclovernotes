@@ -7,6 +7,7 @@ import { contentRouter } from './routes/content.js'
 import { mediaRouter } from './routes/media.js'
 import { migrationRouter } from './routes/migration.js'
 import { publicRouter } from './routes/public.js'
+import { usersRouter } from './routes/users.js'
 
 const app = express()
 const port = Number(process.env.PORT || 8080)
@@ -62,6 +63,7 @@ app.use('/api/bootstrap', bootstrapRouter)
 app.use('/api/content', contentRouter)
 app.use('/api/media', mediaRouter)
 app.use('/api/migration', migrationRouter)
+app.use('/api/users', usersRouter)
 
 app.use((_req, res) => {
   res.status(404).json({ error: 'Route not found.' })
