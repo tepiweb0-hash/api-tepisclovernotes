@@ -1,9 +1,0 @@
-TEPIS CLOVER NOTES — LIVE FIRESTORE DATA FIX
-
-Changes:
-- Public content fetch now uses cache: no-store so CMS/Firestore changes are not frozen into a stale Next.js snapshot.
-- Home artist showcases fall back to published artists if HOME_FEATURES is temporarily incomplete.
-- Current series falls back to a featured/published series if the current-series home feature is incomplete.
-- Current series media now falls back to the series poster when a HOME_FEATURES media override points to a missing media record.
-
-No new Vercel environment variables are required.
