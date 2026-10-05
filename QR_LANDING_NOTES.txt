@@ -1,0 +1,11 @@
+QR LANDING PAGE
+
+Permanent destination:
+https://tepisclovernotes.vercel.app/qr
+
+Current landing links:
+1. Instagram — https://www.instagram.com/teshowpingph
+2. X / Twitter — https://x.com/teshowpingph_
+3. Official Website — https://tepisclovernotes.vercel.app
+
+The QR itself points only to the /qr page, so the QR image never needs to change when these destination links are updated later.

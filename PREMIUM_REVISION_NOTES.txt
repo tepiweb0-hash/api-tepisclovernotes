@@ -1,0 +1,26 @@
+TE SHOW THE PING — PREMIUM REVISION
+
+Implemented in this build:
+- Logo-palette premium light theme + persistent light/dark mode toggle
+- Floating glass navigation with notification popup
+- Restored floating Message Us control
+- Editable header/footer labels and navigation through Google Sheets/CMS
+- Footer: TePi's Clover Note 2026, Explore links, contact socials, fan disclaimer
+- Home hero without redundant Match Point image; richer fan-page presentation
+- Shared + solo series discovery
+- Richer artist profiles: current project, timeline, achievements, filmography, related news
+- Series discovery: related news, related events and more series
+- Episode image cards with 12-hour time and explicit ICT timezone
+- Episode detail modal: full synopsis, release/replay info, credited cast, watch/source links
+- Premium event calendar: click date -> schedule modal -> Quick Info -> Full Event
+- Notification popup: Quick Info / Full Info + CTA
+- Notification archive route
+- Dynamic Google Sheet relationships for news/events/series
+
+IMPORTANT DEPLOY ORDER
+1. Replace/redeploy the revised Apps Script TXT package first, using the SAME Web App deployment.
+2. Deploy this public website to Vercel.
+3. Sheet content revalidates in roughly 60 seconds.
+
+IMAGE RULE
+Only /public/logo.png is a regular raster image in this website package. Dynamic artist, series, episode, event and news images are provided by the Sheet/Drive media system.

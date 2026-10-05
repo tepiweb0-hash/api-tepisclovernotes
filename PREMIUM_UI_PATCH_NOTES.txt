@@ -1,0 +1,24 @@
+TEPI'S CLOVER NOTE — PUBLIC SITE UI/UX PATCH
+Date: 2026-09-12
+
+This build continues from the Premium Revision build and keeps the existing Google Sheets + Apps Script content architecture.
+
+PATCHED
+- Dark mode contrast rebalanced: darker/crisper surfaces, reduced hero haze, improved text/CTA contrast.
+- Mobile navigation redesigned as a proper premium slide-down drawer instead of horizontally cramming desktop links.
+- Tablet breakpoints reworked for cards, hero sections, artist/series details, episodes, calendar, dialogs and footer.
+- Mobile breakpoints reworked for touch-friendly navigation, stacked/compact cards, episode modal, calendar, footer and Message Us.
+- Floating Message Us remains present, but no admin/CMS placeholder wording is exposed publicly.
+- Empty social/footer URLs are hidden publicly.
+- No "Add link" or CMS/admin wording appears on public pages.
+- Series cast now displays principal non-profile cast with a clean fallback card instead of silently omitting them.
+- Episode cards/modals kept rich and responsive; watch/source CTAs render only when the URL exists.
+- Footer and cards refined for stronger premium visual hierarchy.
+
+DATA
+- This build consumes the same live Google Sheets data, including the completed episode rows added after the previous package.
+- No database reset or migration is required for this UI patch.
+
+DEPLOY
+- Deploy this folder/build to Vercel as the replacement public-site source.
+- The existing CONTENT_API_URL / Apps Script endpoint remains supported.
